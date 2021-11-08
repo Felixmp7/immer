@@ -1,30 +1,26 @@
-/* eslint-disable no-nested-ternary */
-import { IState } from 'types';
+import { IGift, IState } from 'types';
+import produce from 'immer';
 
-export const addGift = (state: IState, id: string, description: string): IState => ({
-    ...state,
-    gifts: [
-        ...state.gifts,
-        {
-            id,
-            description,
-            image: 'https://picsum.photos/200',
-            reservedBy: undefined,
-        },
-    ],
+export const addGift = (state: IState, id: string, description: string): IState => produce(state, (draft) => {
+    draft.gifts.push({
+        id,
+        description,
+        image: 'https://picsum.photos/200',
+        reservedBy: undefined,
+    });
 });
 
-export const toggleReservation = (state: IState, giftId: string): IState => ({
-    ...state,
-    gifts: state.gifts.map((gift) => {
-        if (gift.id !== giftId) return gift;
-        return {
-            ...gift,
-            reservedBy: gift.reservedBy === undefined
-                ? state.currentUser.id
-                : gift.reservedBy === state.currentUser.id
-                    ? undefined
-                    : gift.reservedBy,
-        };
-    }),
+const handleReserve = (state: IState, giftFound: IGift): number | undefined => {
+    if (!giftFound.reservedBy) return state.currentUser.id;
+
+    if (giftFound.reservedBy === state.currentUser.id) return undefined;
+
+    return giftFound.reservedBy;
+};
+
+export const toggleReservation = (state: IState, giftId: string): IState => produce(state, (draft) => {
+    const found = draft.gifts.find((gift) => gift.id === giftId);
+    if (found) {
+        found.reservedBy = handleReserve(state, found);
+    }
 });
