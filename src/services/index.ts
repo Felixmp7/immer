@@ -1,7 +1,7 @@
 import { IGift, IState } from 'types';
 import produce from 'immer';
 
-export const addGift = (state: IState, id: string, description: string): IState => produce(state, (draft) => {
+export const addGift = produce((draft: IState, id: string, description: string) => {
     draft.gifts.push({
         id,
         description,
@@ -10,17 +10,17 @@ export const addGift = (state: IState, id: string, description: string): IState 
     });
 });
 
-const handleReserve = (state: IState, giftFound: IGift): number | undefined => {
-    if (!giftFound.reservedBy) return state.currentUser?.id;
+const handleReserve = (draft: IState, giftFound: IGift): number | undefined => {
+    if (!giftFound.reservedBy) return draft.currentUser?.id;
 
-    if (giftFound.reservedBy === state.currentUser?.id) return undefined;
+    if (giftFound.reservedBy === draft.currentUser?.id) return undefined;
 
     return giftFound.reservedBy;
 };
 
-export const toggleReservation = (state: IState, giftId: string): IState => produce(state, (draft) => {
+export const toggleReservation = produce((draft: IState, giftId: string) => {
     const found = draft.gifts.find((gift) => gift.id === giftId);
     if (found) {
-        found.reservedBy = handleReserve(state, found);
+        found.reservedBy = handleReserve(draft, found);
     }
 });
