@@ -44,6 +44,10 @@ describe('Reserving an unreserved gift', () => {
     test("didn't the original state", () => {
         expect(initialState.gifts[0].reservedBy).toBe(undefined);
     });
+
+    test('when egghead_subscription change, the rest of state does not change', () => {
+        expect(nextState.gifts[0]).toBe(initialState.gifts[0]);
+    });
 });
 
 describe('Reserving an already reserved gift', () => {
