@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import styled from 'styled-components';
 import { IGift, IUser } from 'types';
 import ButtonStyled from './styled/Button';
@@ -48,7 +48,7 @@ interface IGiftProps {
     onReserve: (id: string) => void;
 }
 
-const Gift: FC<IGiftProps> = ({
+const Gift: FC<IGiftProps> = memo(({
     gift, users, currentUser, onReserve,
 }) => (
     <ContainerGift isReserved={!!(gift.reservedBy)}>
@@ -68,6 +68,8 @@ const Gift: FC<IGiftProps> = ({
             )}
         </div>
     </ContainerGift>
-);
+));
+
+Gift.displayName = 'Gift';
 
 export default Gift;
