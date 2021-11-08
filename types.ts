@@ -2,7 +2,7 @@ export interface IGift {
     id: string;
     description: string;
     image: string;
-    reservedBy: undefined | number;
+    reservedBy?: undefined | number;
 }
 
 export interface IUser {
@@ -12,6 +12,6 @@ export interface IUser {
 
 export interface IState {
     users: IUser[],
-    currentUser: IUser
+    currentUser: IUser | null
     gifts: IGift[],
 }
