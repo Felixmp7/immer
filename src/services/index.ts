@@ -11,9 +11,9 @@ export const addGift = (state: IState, id: string, description: string): IState 
 });
 
 const handleReserve = (state: IState, giftFound: IGift): number | undefined => {
-    if (!giftFound.reservedBy) return state.currentUser.id;
+    if (!giftFound.reservedBy) return state.currentUser?.id;
 
-    if (giftFound.reservedBy === state.currentUser.id) return undefined;
+    if (giftFound.reservedBy === state.currentUser?.id) return undefined;
 
     return giftFound.reservedBy;
 };
