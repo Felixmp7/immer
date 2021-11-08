@@ -21,17 +21,25 @@ const ListContainer = styled.div`
 
 const GiftList = (): JSX.Element => {
     const {
-        users, gifts, currentUser, handleAdd,
+        users, gifts, currentUser, addGift, reserveGift,
     } = useGift();
 
     return (
         <ListContainer>
             <h1>{`Hi, ${currentUser?.name}`}</h1>
             <div className="add-new-gift">
-                <ButtonStyled type="button" onClick={handleAdd}>Add new gift</ButtonStyled>
+                <ButtonStyled type="button" onClick={addGift}>Add new gift</ButtonStyled>
             </div>
             <div>
-                {gifts.map((gift) => <Gift key={gift.id} gift={gift} users={users} />)}
+                {gifts.map((gift) => (
+                    <Gift
+                        key={gift.id}
+                        gift={gift}
+                        users={users}
+                        currentUser={currentUser}
+                        reserveGift={reserveGift}
+                    />
+                ))}
             </div>
         </ListContainer>
     );

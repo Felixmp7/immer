@@ -1,5 +1,4 @@
 import { FC, memo } from 'react';
-import useGift from 'src/hooks/useGift';
 import styled from 'styled-components';
 import { IGift, IUser } from 'types';
 import ButtonStyled from './styled/Button';
@@ -45,31 +44,31 @@ const ContainerGift = styled.div<{ isReserved: boolean }>`
 interface IGiftProps {
     gift: IGift;
     users: Array<IUser>;
+    currentUser: IUser | null;
+    reserveGift: (giftId: string) => void;
 }
 
-const Gift: FC<IGiftProps> = memo(({ gift, users }) => {
-    const { currentUser, handleReserve } = useGift();
-
-    return (
-        <ContainerGift isReserved={!!(gift.reservedBy)}>
-            <img src={gift.image} alt="gift" />
-            <h2 className="description">{gift.description}</h2>
-            <div className="reservation">
-                {!gift.reservedBy || gift.reservedBy === currentUser?.id ? (
-                    <ButtonStyled
-                        type="button"
-                        color="#2b6aa5"
-                        onClick={() => handleReserve(gift.id)}
-                    >
-                        {gift.reservedBy ? 'Unreserve' : 'Reserve'}
-                    </ButtonStyled>
-                ) : (
-                    <span>{users[gift.reservedBy].name}</span>
-                )}
-            </div>
-        </ContainerGift>
-    );
-});
+const Gift: FC<IGiftProps> = memo(({
+    gift, users, currentUser, reserveGift,
+}) => (
+    <ContainerGift isReserved={!!(gift.reservedBy)}>
+        <img src={gift.image} alt="gift" />
+        <h2 className="description">{gift.description}</h2>
+        <div className="reservation">
+            {!gift.reservedBy || gift.reservedBy === currentUser?.id ? (
+                <ButtonStyled
+                    type="button"
+                    color="#2b6aa5"
+                    onClick={() => reserveGift(gift.id)}
+                >
+                    {gift.reservedBy ? 'Unreserve' : 'Reserve'}
+                </ButtonStyled>
+            ) : (
+                <span>{users[gift.reservedBy].name}</span>
+            )}
+        </div>
+    </ContainerGift>
+));
 
 Gift.displayName = 'Gift';
 
