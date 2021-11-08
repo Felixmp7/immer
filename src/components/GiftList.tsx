@@ -13,22 +13,33 @@ const ListContainer = styled.div`
         color: #00b3b3;
     }
 
-    .add-new-gift {
+    .actions {
         padding: 1rem 0;
-        text-align: right;
+        display: flex;
+        justify-content: end;
+        align-items: center;
+
+        .reset {
+            margin-left: 1rem;
+        }
     }
 `;
 
 const GiftList = (): JSX.Element => {
     const {
-        users, gifts, currentUser, addGift, reserveGift,
+        users, gifts, currentUser, addGift, reserveGift, resetGifts,
     } = useGift();
 
     return (
         <ListContainer>
             <h1>{`Hi, ${currentUser?.name}`}</h1>
-            <div className="add-new-gift">
+            <div className="actions">
                 <ButtonStyled type="button" onClick={addGift}>Add new gift</ButtonStyled>
+                <div className="reset">
+                    <ButtonStyled color="#da4d4d" type="button" onClick={resetGifts}>
+                        Reset gifts
+                    </ButtonStyled>
+                </div>
             </div>
             <div>
                 {gifts.map((gift) => (

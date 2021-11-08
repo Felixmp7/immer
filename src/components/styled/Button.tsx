@@ -6,8 +6,9 @@ const ButtonStyled = styled.button<{ color?: string }>`
     border-radius: 1rem;
     padding: .3rem 1.2rem;
     color: ${({ color }) => color || '#00b3b3'};
-    font-weight: 600;
+    font-size: 12px;
     transition: all .5s ease;
+    text-transform: uppercase;
 
     &:hover {
         color: white;
