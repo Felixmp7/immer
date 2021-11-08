@@ -1,26 +1,39 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { addGift, toggleReservation } from 'src/services';
+import { useImmer } from 'use-immer';
+import { handleReserve } from 'src/services';
 import useSession from './useSession';
 
 const useGift = () => {
     const { getInitialState } = useSession();
-    const [state, setState] = useState(getInitialState());
+    const [state, updateState] = useImmer(getInitialState());
     const { users, gifts, currentUser } = state;
 
-    const handleAdd = useCallback(() => {
+    const addGift = useCallback(() => {
         const description = prompt('Gift to add');
         if (description) {
-            setState((prevState) => addGift(prevState, uuidv4(), description));
+            updateState((draft) => {
+                draft.gifts.push({
+                    id: uuidv4(),
+                    description,
+                    image: 'https://picsum.photos/200',
+                    reservedBy: undefined,
+                });
+            });
         }
-    }, []);
+    }, [updateState]);
 
-    const handleReserve = useCallback((id: string) => {
-        setState((prevState) => toggleReservation(prevState, id));
-    }, []);
+    const reserveGift = useCallback((giftId: string) => {
+        updateState((draft) => {
+            const found = draft.gifts.find((gift) => gift.id === giftId);
+            if (found) {
+                found.reservedBy = handleReserve(draft, found);
+            }
+        });
+    }, [updateState]);
 
     return {
-        users, gifts, currentUser, handleAdd, handleReserve,
+        users, gifts, currentUser, addGift, reserveGift,
     };
 };
 
