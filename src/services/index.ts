@@ -10,7 +10,7 @@ export const addGift = produce((draft: IState, id: string, description: string) 
     });
 });
 
-const handleReserve = (draft: IState, giftFound: IGift): number | undefined => {
+export const handleReserve = (draft: IState, giftFound: IGift): number | undefined => {
     if (!giftFound.reservedBy) return draft.currentUser?.id;
 
     if (giftFound.reservedBy === draft.currentUser?.id) return undefined;
