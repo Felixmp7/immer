@@ -32,8 +32,11 @@ const useGift = () => {
         });
     }, [updateState]);
 
+    const resetGifts = useCallback(() => updateState(() => getInitialState()),
+        [getInitialState, updateState]);
+
     return {
-        users, gifts, currentUser, addGift, reserveGift,
+        users, gifts, currentUser, addGift, reserveGift, resetGifts,
     };
 };
 
