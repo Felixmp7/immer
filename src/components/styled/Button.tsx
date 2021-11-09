@@ -7,6 +7,7 @@ const ButtonStyled = styled.button<{ color?: string }>`
     padding: .3rem 1.2rem;
     color: ${({ color }) => color || '#00b3b3'};
     font-size: 12px;
+    font-weight: bold;
     transition: all .5s ease;
     text-transform: uppercase;
 
