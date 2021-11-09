@@ -24,3 +24,24 @@ export const toggleReservation = produce((draft: IState, giftId: string) => {
         found.reservedBy = handleReserve(draft, found);
     }
 });
+
+export const getBookDetails = async (isbn: string) => {
+    try {
+        const response = await fetch(`http://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&jscmd=data&format=json`, {
+            mode: 'cors',
+        });
+        const book = (await response.json())[`ISBN:${isbn}`];
+        return book;
+    } catch (error) {
+        return undefined;
+    }
+};
+
+export const addBook = produce((draft, book) => {
+    draft.gifts.push({
+        id: book.isbn,
+        description: book.title,
+        image: book.cover.medium,
+        reservedBy: undefined,
+    });
+});
