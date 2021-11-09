@@ -19,7 +19,7 @@ const ListContainer = styled.div`
         justify-content: end;
         align-items: center;
 
-        .reset {
+        .mr-button {
             margin-left: 1rem;
         }
     }
@@ -27,7 +27,7 @@ const ListContainer = styled.div`
 
 const GiftList = (): JSX.Element => {
     const {
-        users, gifts, currentUser, addGift, reserveGift, resetGifts,
+        users, gifts, currentUser, addGift, reserveGift, resetGifts, handleAddBook,
     } = useGift();
 
     return (
@@ -35,7 +35,12 @@ const GiftList = (): JSX.Element => {
             <h1>{`Hi, ${currentUser?.name}`}</h1>
             <div className="actions">
                 <ButtonStyled type="button" onClick={addGift}>Add new gift</ButtonStyled>
-                <div className="reset">
+                <div className="mr-button">
+                    <ButtonStyled color="#37a056" type="button" onClick={handleAddBook}>
+                        Add book
+                    </ButtonStyled>
+                </div>
+                <div className="mr-button">
                     <ButtonStyled color="#da4d4d" type="button" onClick={resetGifts}>
                         Reset gifts
                     </ButtonStyled>
