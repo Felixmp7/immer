@@ -1,3 +1,4 @@
+/* eslint-disable no-void */
 import { useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useImmer } from 'use-immer';
@@ -12,14 +13,12 @@ const useGift = () => {
     const addGift = useCallback(() => {
         const description = prompt('Gift to add');
         if (description) {
-            updateState((draft) => {
-                draft.gifts.push({
-                    id: uuidv4(),
-                    description,
-                    image: 'https://picsum.photos/200',
-                    reservedBy: undefined,
-                });
-            });
+            updateState((draft) => void draft.gifts.push({
+                id: uuidv4(),
+                description,
+                image: 'https://picsum.photos/200',
+                reservedBy: undefined,
+            }));
         }
     }, [updateState]);
 
