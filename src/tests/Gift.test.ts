@@ -1,4 +1,6 @@
-import { addGift, toggleReservation } from 'src/services';
+import {
+    addBook, addGift, getBookDetails, toggleReservation,
+} from 'src/services';
 
 const initialState = {
     users: [
@@ -61,5 +63,20 @@ describe('Reserving an already reserved gift', () => {
 
     test('preserves stored reservedBy', () => {
         expect(nextState.gifts[0].reservedBy).toBe(1);
+    });
+});
+
+describe('Can add books async', () => {
+    test('Can add math book', async () => {
+        const book = await getBookDetails('0201558025');
+        const nextState = addBook(initialState, book);
+        expect(nextState.gifts[2].description).toBe('Concrete mathematics');
+    });
+
+    test('Can add two books in parallel', async () => {
+        const promise1 = getBookDetails('0201558025');
+        const promise2 = getBookDetails('9781598560169');
+        const nextState = addBook(addBook(initialState, await promise1), await promise2);
+        expect(nextState.gifts.length).toBe(4);
     });
 });
