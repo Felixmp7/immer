@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useImmer } from 'use-immer';
-import { handleReserve } from 'src/services';
+import { addBook, getBookDetails, handleReserve } from 'src/services';
 import useSession from './useSession';
 
 const useGift = () => {
@@ -35,8 +35,16 @@ const useGift = () => {
     const resetGifts = useCallback(() => updateState(() => getInitialState()),
         [getInitialState, updateState]);
 
+    const handleAddBook = async () => {
+        const isbn = prompt('Enter ISBN number', '0201558025');
+        if (isbn) {
+            const book = await getBookDetails(isbn);
+            if (book) updateState((prevState) => addBook(prevState, book));
+        }
+    };
+
     return {
-        users, gifts, currentUser, addGift, reserveGift, resetGifts,
+        users, gifts, currentUser, addGift, reserveGift, resetGifts, handleAddBook,
     };
 };
 
